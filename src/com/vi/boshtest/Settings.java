@@ -13,7 +13,7 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 public class Settings extends Activity {
-	SharedPreferences savedStrings;
+	SharedPreferences storedValues;
 	SharedPreferences.Editor editor;
     EditText ethost, etdomain, etport, etuser, etpassword, etrecipient;
     View rbxmpp, rbbosh;
@@ -23,8 +23,8 @@ public class Settings extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings);
-		savedStrings = getSharedPreferences("StoredValues", 0);
-		editor = savedStrings.edit();
+		storedValues = getSharedPreferences("StoredValues", 0);
+		editor = storedValues.edit();
 
         ethost = (EditText)this.findViewById(R.id.et_host);
         etdomain = (EditText)this.findViewById(R.id.et_domain);
@@ -36,63 +36,64 @@ public class Settings extends Activity {
         rbbosh = this.findViewById(R.id.rb_bosh);
         btnOK = (Button)this.findViewById(R.id.ok);
 
-		if (savedStrings.getBoolean("bosh", false)) {
+		if (!storedValues.getBoolean("bosh", false)) {
+			((RadioButton)rbxmpp).setChecked(true);
 			onRadioButtonClicked(rbxmpp);
 		} else {
+			((RadioButton)rbbosh).setChecked(true);
 			onRadioButtonClicked(rbbosh);
 		}
     }
     
     public void onRadioButtonClicked(View view) {
-        boolean checked = ((RadioButton)view).isChecked();
         String str = "";
-        
         switch(view.getId()) {
             case R.id.rb_xmpp:
-                if (checked) {
-                	editor.putBoolean("bosh", false);
-                	editor.commit();
+                editor.putBoolean("bosh", false);
+                editor.commit();
                 	
-        			str = savedStrings.getString("xmpp_host", "talk.google.com");
-    				ethost.setText(str);
-    				str = savedStrings.getString("xmpp_domain", "gmail.com");
-    				etdomain.setText(str);
-    				str = "" + savedStrings.getInt("xmpp_port", 5222);
-    				etport.setText(str);
-    				str = savedStrings.getString("xmpp_user", "karelc@viprod.com");
-    				etuser.setText(str);
-    				str = savedStrings.getString("xmpp_recipient", "kevinm@viprod.com");
-    				etrecipient.setText(str);
-                }
+        		str = storedValues.getString("xmpp_host", "talk.google.com");
+    			ethost.setText(str);
+    			str = storedValues.getString("xmpp_domain", "gmail.com");
+    			etdomain.setText(str);
+    			str = "" + storedValues.getInt("xmpp_port", 5222);
+    			etport.setText(str);
+    			str = storedValues.getString("xmpp_user", "");
+    			etuser.setText(str);
+    			str = storedValues.getString("xmpp_password", "");
+    			etpassword.setText(str);
+    			str = storedValues.getString("xmpp_recipient", "");
+    			etrecipient.setText(str);
     			break;
+    			
             case R.id.rb_bosh:
-                if (checked) {
-                	editor.putBoolean("bosh", true);
-                	editor.commit();
+                editor.putBoolean("bosh", true);
+                editor.commit();
                 	
-        			str = savedStrings.getString("bosh_host", "xmpp.viprod.com");
-        			ethost.setText(str);
-        			str = savedStrings.getString("bosh_domain", "viprod.com");
-        			etdomain.setText(str);
-        			str = "" + savedStrings.getInt("bosh_port", 5280);
-        			etport.setText(str);
-        			str = savedStrings.getString("bosh_user", "test1@viprod.com");
-        			etuser.setText(str);
-        			str = savedStrings.getString("bosh_recipient", "test2@viprod.com");
-        			etrecipient.setText(str);
-                }
+        		str = storedValues.getString("bosh_host", "xmpp.viprod.com");
+        		ethost.setText(str);
+        		str = storedValues.getString("bosh_domain", "viprod.com");
+        		etdomain.setText(str);
+        		str = "" + storedValues.getInt("bosh_port", 5280);
+        		etport.setText(str);
+        		str = storedValues.getString("bosh_user", "test1@viprod.com");
+        		etuser.setText(str);
+        		str = storedValues.getString("bosh_password", "test1");
+        		etpassword.setText(str);
+        		str = storedValues.getString("bosh_recipient", "test2@viprod.com");
+        		etrecipient.setText(str);
                 break;
         }
     }
     
     public void onButtonClicked(View view) {
     	if (view.getId() == btnOK.getId()) {
-    		if (savedStrings.getBoolean("bosh", false)) {
+    		if (storedValues.getBoolean("bosh", false)) {
     			editor.putString("bosh_host", ethost.getText().toString());
     			editor.putString("bosh_domain", etdomain.getText().toString());
     			editor.putInt("bosh_port", Integer.parseInt(etport.getText().toString()));
     			editor.putString("bosh_user", etuser.getText().toString());
-    			editor.putString("password", etpassword.getText().toString());
+    			editor.putString("bosh_password", etpassword.getText().toString());
     			editor.putString("bosh_recipient", etrecipient.getText().toString());
     			editor.commit();
     		} else {
@@ -100,7 +101,7 @@ public class Settings extends Activity {
     			editor.putString("xmpp_domain", etdomain.getText().toString());
     			editor.putInt("xmpp_port", Integer.parseInt(etport.getText().toString()));
     			editor.putString("xmpp_user", etuser.getText().toString());
-    			editor.putString("password", etpassword.getText().toString());
+    			editor.putString("xmpp_password", etpassword.getText().toString());
     			editor.putString("xmpp_recipient", etrecipient.getText().toString());
     			editor.commit();
     		}

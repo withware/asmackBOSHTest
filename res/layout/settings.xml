@@ -122,7 +122,6 @@
 		android:singleLine="true"
 		android:textSize="16sp"
 		android:hint="type here"
-		android:fontFamily="sans-serif"
 		android:imeOptions="actionNext"
 		android:autoText="false"
 		android:capitalize="none"
@@ -150,10 +149,11 @@
 		android:scrollHorizontally="true"/>
 
 	<Button android:id="@+id/ok"
-		android:layout_width="wrap_content"
+		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:layout_below="@+id/recipient"
-		android:layout_marginTop="20sp"
+		android:layout_margin="20sp"
+		android:gravity="center"
 		android:text="OK"
 		android:onClick="onButtonClicked"/>
 </RelativeLayout>

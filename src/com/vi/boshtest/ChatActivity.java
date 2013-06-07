@@ -12,7 +12,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.text.format.Time;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,14 +55,15 @@ public class ChatActivity extends Activity {
 		bosh = savedStrings.getBoolean("bosh", false);
 		if (bosh) {
 			user = savedStrings.getString("bosh_user", "");
-			password = savedStrings.getString("password", "");
+			password = savedStrings.getString("bosh_password", "");
 			recipient = savedStrings.getString("bosh_recipient", "");
 			host = savedStrings.getString("bosh_host", "");
 			domain = savedStrings.getString("bosh_domain", "");
 			port = savedStrings.getInt("bosh_port", 0);
+	        user += "@"; //ensure user.indexOf("@") works if no @ was in the string
 		} else {
 			user = savedStrings.getString("xmpp_user", "");
-			password = savedStrings.getString("password", "");
+			password = savedStrings.getString("xmpp_password", "");
 			recipient = savedStrings.getString("xmpp_recipient", "");
 			host = savedStrings.getString("xmpp_host", "");
 			domain = savedStrings.getString("xmpp_domain", "");
@@ -171,9 +171,7 @@ public class ChatActivity extends Activity {
 			    public void processMessage(Chat chat, Message message) {
 			    	String fromName = StringUtils.parseBareAddress(message.getFrom());
                     messages.add(fromName + ":");
-	                Time time = new Time(Time.getCurrentTimezone());
-	                time.setToNow();
-                    messages.add(message.getBody() + " - recd: " + time.format("%k:%M:%S") + ")");
+                    messages.add(message.getBody() + "");
 			    	handler.post(new Runnable() {
                         public void run() {
                             setListAdapter();
@@ -187,13 +185,9 @@ public class ChatActivity extends Activity {
 	                String to = recipient;
 	                String text = etmessage.getText().toString();
 	                etmessage.setText("");
-                	messages.add("You:");
+                	messages.add("You (" + user + "):");
                 	messages.add(text);
                 	setListAdapter();
-	                
-	                Time time = new Time(Time.getCurrentTimezone());
-	                time.setToNow();
-	                text += " (sent: " + time.format("%k:%M:%S");
 	                try {
 	                	Message msg = new Message(to, Message.Type.chat);
 	                	msg.setBody(text);
@@ -211,14 +205,9 @@ public class ChatActivity extends Activity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.multi_line_list_item, messages);
         list.setAdapter(adapter);
     }
-
-    @Override
-    protected void onResume() {
-    	super.onResume();
-    }
    
     @Override
-    protected void onStop() {
+    protected void onDestroy() {
     	super.onStop();
     	if (bosh) boshconnection.disconnect();
         else xmppconnection.disconnect();
