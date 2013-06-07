@@ -12,7 +12,7 @@ It's Google Talk, use Google accounts.
 
 BOSH Accounts:
 test1@viprod.com, password test1
-test2viprod.com, password test2.
+test2viprod.com, password test2
 
 The issue:
 With BOSH you connect to the server with two connections, one connection is always waiting for a response from the server and the server will send that response after x time or when a message needs to be sent to the app. The other connection is available for the app to instantly send a message to the server.
