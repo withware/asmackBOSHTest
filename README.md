@@ -11,6 +11,8 @@ Some helpful instructions:
 
 The app launches with a settings screen that will remember whatever you have in it when you click ok. It remembers XMPP and BOSH modes seperately, and has default values for everything except your Google account.
 
+-- 
+The ejabberd-server and configuration as in use is a fully out-of-the-box installment of ejabberd except for the enabling of BOSH.
 --
 
 XMPP Accounts:
