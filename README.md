@@ -5,13 +5,13 @@ Purpose:
 
 A test app using Asmack that does simple chat over XMPP with Google Talk, and over BOSH with viprod server, to demonstrate our issue with BOSH.
 
-
+--
 
 Some helpful instructions:
 
 The app launches with a settings screen that will remember whatever you have in it when you click ok. It remembers XMPP and BOSH modes seperately, and has default values for everything except your Google account.
 
-
+--
 
 XMPP Accounts:
 
@@ -23,9 +23,9 @@ BOSH Accounts:
 
 test1@viprod.com, password test1
 
-test2viprod.com, password test2
+test2@viprod.com, password test2
 
-
+--
 
 The issue:
 
